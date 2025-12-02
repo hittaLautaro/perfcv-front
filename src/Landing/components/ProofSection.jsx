@@ -58,7 +58,7 @@ const ProofSection = () => {
           </div>
 
           <NavLink
-            to={"/auth/signup"}
+            to={"/templates"}
             className="block bg-amber-400 text-slate-800 text-lg mt-10 px-6 py-3 rounded-xl font-semibold font-mono border border-slate-800 hover:bg-amber-500 hover:text-black hover:border-zinc-900 transition-colors duration-300"
           >
             Create your resume!

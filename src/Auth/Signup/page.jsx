@@ -1,30 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
+import useAuth from "../hooks/useAuth";
 import { NavLink } from "react-router-dom";
 
 const SignupPage = () => {
+  const { register } = useAuth();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+
   const handleOAuth = () => {
     console.log("Google login");
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!name.trim()) {
+      setError("Name is required");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      // Sending a default date to satisfy backend requirement since field was removed from UI
+      await register({ name, email, password, dateOfBirth: "2000-01-01" });
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-zinc-950 min-h-screen">
       <div className="flex flex-col justify-center items-center min-h-[calc(100vh-80px)] px-4">
         <NavLink
           to={"/"}
-          className="text-4xl pb-1 text-zinc-800 font-bold font-sans rounded transition-colors duration-300 underline decoration-amber-400 mb-12"
+          className="text-4xl pb-1 text-zinc-100 font-bold font-sans rounded transition-colors duration-300 underline decoration-amber-400 mb-12"
         >
           PerfCV
         </NavLink>
 
-        <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md border-slate-300 border">
-          <h2 className="text-2xl font-bold text-center text-slate-800 mb-6">
+        <div className="bg-zinc-900 p-8 rounded-xl shadow-md w-full max-w-md border-zinc-800 border">
+          <h2 className="text-2xl font-bold text-center text-zinc-100 mb-6">
             Create account
           </h2>
 
           <button
             onClick={handleOAuth}
             disabled={true}
-            className="flex items-center justify-center cursor-not-allowed bg-gray-300 border border-slate-400 rounded-md w-full px-4 py-2 shadow-sm hover:shadow-md transition-shadow duration-300"
+            className="flex items-center justify-center cursor-not-allowed bg-zinc-800 border border-zinc-700 rounded-md w-full px-4 py-2 shadow-sm hover:shadow-md transition-shadow duration-300"
           >
             <svg
               className="w-6 h-6 mr-3"
@@ -48,80 +78,114 @@ const SignupPage = () => {
                 d="M272 107.7c39.9 0 75.7 13.7 103.8 40.6l77.8-77.8C399.9 24.9 341 0 272 0 166.3 0 72.9 59.5 27.5 150l90.8 70.9c21.7-64.9 82.2-113.2 153.7-113.2z"
               />
             </svg>
-            <span className="text-gray-700 font-medium">
+            <span className="text-zinc-300 font-medium">
               Sign up with Google
             </span>
           </button>
 
           <div className="flex justify-center items-center mt-4 mb-4">
-            <span className="text-black">OR</span>
+            <span className="text-zinc-400">OR</span>
           </div>
 
-          <form>
-            <div className="mb-4">
+          {error && (
+            <div className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded relative mb-4" role="alert">
+              <span className="block sm:inline">{error}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-semibold text-zinc-300 mb-1"
+              >
+                Full Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-2 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-zinc-800 text-white placeholder-zinc-500"
+                placeholder="John Doe"
+                required
+              />
+            </div>
+
+            <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-semibold text-slate-700 mb-1"
+                className="block text-sm font-semibold text-zinc-300 mb-1"
               >
                 Email
               </label>
               <input
                 id="email"
                 type="email"
-                className="w-full px-4 py-2 border border-slate-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400 bg-white"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-zinc-800 text-white placeholder-zinc-500"
                 placeholder="ejemplo@email.com"
                 required
               />
             </div>
 
-            <div className="mb-4">
+            <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-semibold text-slate-700 mb-1"
+                className="block text-sm font-semibold text-zinc-300 mb-1"
               >
                 Password
               </label>
               <input
                 id="password"
                 type="password"
-                className="w-full px-4 py-2 border border-slate-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400 bg-white"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-zinc-800 text-white placeholder-zinc-500"
                 placeholder="••••••••"
                 required
               />
             </div>
 
-            <div className="mb-6">
+            <div>
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm font-semibold text-slate-700 mb-1"
+                className="block text-sm font-semibold text-zinc-300 mb-1"
               >
                 Confirm Password
               </label>
               <input
                 id="confirmPassword"
                 type="password"
-                className="w-full px-4 py-2 border border-slate-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400 bg-white"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-4 py-2 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-zinc-800 text-white placeholder-zinc-500"
                 placeholder="••••••••"
                 required
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-slate-800 text-white py-2 rounded-lg font-semibold hover:bg-amber-400 hover:text-black transition-all duration-300"
-            >
-              Create account
-            </button>
-
-            <p className="text-sm text-center text-slate-600 mt-4">
-              Already have an account?{" "}
-              <NavLink
-                to="/auth/login"
-                className="text-amber-600 font-semibold hover:underline"
+            <div className="mt-2">
+              <button
+                type="submit"
+                className="w-full bg-white text-black py-2 rounded-lg font-semibold hover:bg-amber-400 transition-all duration-300"
               >
-                Log in
-              </NavLink>
-            </p>
+                Create account
+              </button>
+            </div>
+
+            <div>
+              <p className="text-sm text-center text-zinc-400 mt-2">
+                Already have an account?{" "}
+                <NavLink
+                  to="/auth/login"
+                  className="text-amber-400 font-semibold hover:underline"
+                >
+                  Log in
+                </NavLink>
+              </p>
+            </div>
           </form>
         </div>
       </div>

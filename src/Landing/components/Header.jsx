@@ -1,31 +1,56 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { LogOut, User } from "lucide-react";
 
 const Header = () => {
+  const { isAuthenticated, logout } = useAuth();
+
   return (
-    <nav className="fixed top-0 w-full bg-white z-50 border-b-2 border-zinc-800">
+    <nav className="fixed top-0 w-full bg-zinc-950 z-50 border-b border-zinc-800">
       <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center mt-2 ">
         <div className="flex space-x-8 items-center">
-          <button
-            onClick={() => scrollToSection("hero")}
-            className="text-4xl pb-1 text-zinc-800 font-bold font-sans rounded transition-colors duration-300 underline decoration-white hover:decoration-amber-400"
+          <NavLink
+            to="/"
+            className="text-4xl pb-1 text-zinc-100 font-bold font-sans rounded transition-colors duration-300 underline decoration-zinc-950 hover:decoration-amber-400"
           >
             PerfCV
-          </button>
+          </NavLink>
         </div>
 
-        <div className="flex space-x-3 pb-1">
-          <NavLink
-            to={"/auth/login"}
-            className="duration-150 text-md border border-slate-800 bg-slate-800 px-5 py-2 rounded-xl font-medium font-sans text-white hover:bg-slate-900"
-          >
-            Log in
-          </NavLink>
-          <NavLink
-            to={"/auth/signup"}
-            className="duration-150 text-md border border-zinc-900 bg-amber-300 px-5 py-2 rounded-xl font-medium font-sans text-black hover:bg-amber-400"
-          >
-            Signup
-          </NavLink>
+        <div className="flex space-x-3 pb-1 items-center">
+          {isAuthenticated ? (
+            <>
+              <NavLink
+                to="/account"
+                className="flex items-center gap-2 text-zinc-200 font-medium hover:text-amber-400 transition-colors"
+              >
+                <User size={20} />
+                Account
+              </NavLink>
+              <button
+                onClick={logout}
+                className="flex items-center gap-2 duration-150 text-md border border-zinc-700 bg-zinc-800 px-5 py-2 rounded-xl font-medium font-sans text-white hover:bg-zinc-700"
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink
+                to={"/auth/login"}
+                className="duration-150 text-md border border-zinc-700 bg-zinc-800 px-5 py-2 rounded-xl font-medium font-sans text-white hover:bg-zinc-700"
+              >
+                Log in
+              </NavLink>
+              <NavLink
+                to={"/auth/signup"}
+                className="duration-150 text-md border border-amber-400 bg-amber-400 px-5 py-2 rounded-xl font-medium font-sans text-black hover:bg-amber-300"
+              >
+                Signup
+              </NavLink>
+            </>
+          )}
         </div>
       </div>
     </nav>

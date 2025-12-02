@@ -1,17 +1,15 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import LoginPage from "./Auth/Login/page.jsx";
 import SignupPage from "./Auth/Signup/page.jsx";
 import TemplatesPage from "./Templates/page.jsx";
-import CvFormPage from "./CvForm/page.jsx";
-import PrivateRoute from "./global/components/PrivateRoute.jsx";
-import PublicRoute from "./global/components/PublicRoute.jsx";
-import HomeRoute from "./global/components/HomeRoute.jsx";
-import { AuthProvider } from "./context/AuthContext.jsx";
-import ResumesPage from "./Resumes/ResumesPage.jsx";
-import EditResumePage from "./Resumes/EditResumePage.jsx";
-import EditFormPage from "./CvForm/EditFormPage.jsx";
+import LandingPage from "./Landing/page.jsx";
+
+import PrivateLayout from "./layouts/PrivateLayout.jsx";
+import PublicLayout from "./layouts/PublicLayout.jsx";
+import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
+import LoadingPage from "./global/components/LoadingPage.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,72 +20,43 @@ const queryClient = new QueryClient({
   },
 });
 
+function AppRoutes() {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) return <LoadingPage />;
+
+  return (
+    <Routes>
+      {/* Root Route: Redirects to templates if authenticated, else shows Landing */}
+      <Route
+        path="/"
+        element={isAuthenticated ? <Navigate to="/templates" /> : <LandingPage />}
+      />
+
+      {/* Public Routes (Accessible by anyone) */}
+      <Route path="/templates" element={<TemplatesPage />} />
+
+      {/* Auth Routes (Only for unauthenticated users) */}
+      <Route element={<PublicLayout />}>
+        <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/auth/signup" element={<SignupPage />} />
+      </Route>
+
+      {/* Private Routes (Only for authenticated users) */}
+      <Route element={<PrivateLayout />}>
+        {/* Add private routes here in the future */}
+        {/* Example: <Route path="/dashboard" element={<Dashboard />} /> */}
+      </Route>
+    </Routes>
+  );
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
         <AuthProvider>
-          <Routes>
-            <Route path="/" element={<HomeRoute />} />
-            <Route
-              path="/templates"
-              element={
-                <PrivateRoute>
-                  <TemplatesPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/templates/:id/fill"
-              element={
-                <PrivateRoute>
-                  <CvFormPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/resumes"
-              element={
-                <PrivateRoute>
-                  <ResumesPage />
-                </PrivateRoute>
-              }
-            />
-
-            <Route
-              path="/resumes/:id/edit"
-              element={
-                <PrivateRoute>
-                  <EditResumePage />
-                </PrivateRoute>
-              }
-            />
-
-            <Route
-              path="/form"
-              element={
-                <PrivateRoute>
-                  <EditFormPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/auth/login"
-              element={
-                <PublicRoute>
-                  <LoginPage />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/auth/signup"
-              element={
-                <PublicRoute>
-                  <SignupPage />
-                </PublicRoute>
-              }
-            />
-          </Routes>
+          <AppRoutes />
         </AuthProvider>
       </Router>
     </QueryClientProvider>

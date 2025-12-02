@@ -22,24 +22,24 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-zinc-950 min-h-screen">
       <div className="flex flex-col justify-center items-center min-h-[calc(100vh-80px)] px-4">
         <NavLink
           to={"/"}
-          className="text-4xl pb-1 text-zinc-800 font-bold font-sans rounded transition-colors duration-300 underline decoration-amber-400 mb-12"
+          className="text-4xl pb-1 text-zinc-100 font-bold font-sans rounded transition-colors duration-300 underline decoration-amber-400 mb-12"
         >
           PerfCV
         </NavLink>
 
-        <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md border-slate-300 border">
-          <h2 className="text-2xl font-bold text-center text-slate-800 mb-6">
+        <div className="bg-zinc-900 p-8 rounded-xl shadow-md w-full max-w-md border-zinc-800 border">
+          <h2 className="text-2xl font-bold text-center text-zinc-100 mb-6">
             Log in
           </h2>
 
           <button
             onClick={handleOAuth}
             disabled={true}
-            className="flex items-center justify-center cursor-not-allowed bg-gray-300 border border-slate-400 rounded-md w-full px-4 py-2 shadow-sm hover:shadow-md transition-shadow duration-300 "
+            className="flex items-center justify-center cursor-not-allowed bg-zinc-800 border border-zinc-700 rounded-md w-full px-4 py-2 shadow-sm hover:shadow-md transition-shadow duration-300 "
           >
             <svg
               className="w-6 h-6 mr-3"
@@ -63,18 +63,18 @@ const LoginPage = () => {
                 d="M272 107.7c39.9 0 75.7 13.7 103.8 40.6l77.8-77.8C399.9 24.9 341 0 272 0 166.3 0 72.9 59.5 27.5 150l90.8 70.9c21.7-64.9 82.2-113.2 153.7-113.2z"
               />
             </svg>
-            <span className="text-gray-700 font-medium">Login with Google</span>
+            <span className="text-zinc-300 font-medium">Login with Google</span>
           </button>
 
           <div className="flex justify-center items-center mt-4 mb-4">
-            <span className="text-black">OR</span>
+            <span className="text-zinc-400">OR</span>
           </div>
 
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label
                 htmlFor="email"
-                className="block text-sm font-semibold text-slate-700 mb-1"
+                className="block text-sm font-semibold text-zinc-300 mb-1"
               >
                 Email
               </label>
@@ -83,7 +83,7 @@ const LoginPage = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border border-slate-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400 bg-white"
+                className="w-full px-4 py-2 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-zinc-800 text-white placeholder-zinc-500"
                 placeholder="ejemplo@email.com"
                 required
               />
@@ -92,7 +92,7 @@ const LoginPage = () => {
             <div className="mb-6">
               <label
                 htmlFor="password"
-                className="block text-sm font-semibold text-slate-700 mb-1"
+                className="block text-sm font-semibold text-zinc-300 mb-1"
               >
                 Password
               </label>
@@ -101,7 +101,7 @@ const LoginPage = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-slate-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400 bg-white"
+                className="w-full px-4 py-2 border border-zinc-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 bg-zinc-800 text-white placeholder-zinc-500"
                 placeholder="••••••••"
                 required
               />
@@ -109,23 +109,23 @@ const LoginPage = () => {
 
             <button
               type="submit"
-              className="w-full bg-slate-800 text-white py-2 rounded-lg font-semibold hover:bg-amber-400 hover:text-black transition-all duration-300"
+              className="w-full bg-white text-black py-2 rounded-lg font-semibold hover:bg-amber-400 transition-all duration-300"
               disabled={mutation.isLoading}
             >
               {mutation.isLoading ? "Logging in..." : "Log in"}
             </button>
 
             {mutation.isError && (
-              <p className="text-red-600 mt-3 text-center">
+              <p className="text-red-400 mt-3 text-center">
                 {mutation.error.message}
               </p>
             )}
 
-            <p className="text-sm text-center text-slate-600 mt-4">
+            <p className="text-sm text-center text-zinc-400 mt-4">
               Don't have an account?{" "}
               <NavLink
                 to="/auth/signup"
-                className="text-amber-600 font-semibold hover:underline"
+                className="text-amber-400 font-semibold hover:underline"
               >
                 Sign up
               </NavLink>
