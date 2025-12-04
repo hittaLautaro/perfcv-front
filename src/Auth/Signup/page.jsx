@@ -48,7 +48,7 @@ const SignupPage = () => {
           <img src={logo} alt="PerfCV Logo" className="h-16 w-auto" />
         </NavLink>
 
-        <div className="bg-zinc-900 p-8 rounded-xl shadow-md w-full max-w-md border-zinc-800 border">
+        <div className="bg-zinc-900 p-8 rounded-xl shadow-md w-full max-w-2xl border-zinc-800 border">
           <h2 className="text-2xl font-bold text-center text-zinc-100 mb-6">
             Create account
           </h2>
@@ -95,7 +95,7 @@ const SignupPage = () => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label
                 htmlFor="name"
@@ -168,7 +168,7 @@ const SignupPage = () => {
               />
             </div>
 
-            <div className="mt-2">
+            <div className="mt-2 md:col-span-2">
               <button
                 type="submit"
                 className="w-full bg-white text-black py-2 rounded-lg font-semibold hover:bg-amber-400 transition-all duration-300"
@@ -177,7 +177,7 @@ const SignupPage = () => {
               </button>
             </div>
 
-            <div>
+            <div className="md:col-span-2">
               <p className="text-sm text-center text-zinc-400 mt-2">
                 Already have an account?{" "}
                 <NavLink
