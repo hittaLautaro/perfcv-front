@@ -5,6 +5,7 @@ import LoginPage from "./Auth/Login/page.jsx";
 import SignupPage from "./Auth/Signup/page.jsx";
 import TemplatesPage from "./Templates/page.jsx";
 import LandingPage from "./Landing/page.jsx";
+import AccountPage from "./Account/page.jsx";
 
 import PrivateLayout from "./layouts/PrivateLayout.jsx";
 import PublicLayout from "./layouts/PublicLayout.jsx";
@@ -31,15 +32,13 @@ function AppRoutes() {
         path="/"
         element={isAuthenticated ? <Navigate to="/templates" /> : <LandingPage />}
       />
-
       <Route path="/templates" element={<TemplatesPage />} />
-
       <Route element={<PublicLayout />}>
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/signup" element={<SignupPage />} />
       </Route>
-
       <Route element={<PrivateLayout />}>
+        <Route path="/account" element={<AccountPage />} />
       </Route>
     </Routes>
   );

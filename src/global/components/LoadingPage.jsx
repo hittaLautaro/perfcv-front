@@ -1,7 +1,9 @@
+import { Loader2 } from "lucide-react";
+
 const LoadingPage = () => {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="text-black"> loading...</div>
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <Loader2 className="w-8 h-8 text-zinc-400 animate-spin" />
     </div>
   );
 };
