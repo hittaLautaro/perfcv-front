@@ -27,25 +27,19 @@ function AppRoutes() {
 
   return (
     <Routes>
-      {/* Root Route: Redirects to templates if authenticated, else shows Landing */}
       <Route
         path="/"
         element={isAuthenticated ? <Navigate to="/templates" /> : <LandingPage />}
       />
 
-      {/* Public Routes (Accessible by anyone) */}
       <Route path="/templates" element={<TemplatesPage />} />
 
-      {/* Auth Routes (Only for unauthenticated users) */}
       <Route element={<PublicLayout />}>
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/signup" element={<SignupPage />} />
       </Route>
 
-      {/* Private Routes (Only for authenticated users) */}
       <Route element={<PrivateLayout />}>
-        {/* Add private routes here in the future */}
-        {/* Example: <Route path="/dashboard" element={<Dashboard />} /> */}
       </Route>
     </Routes>
   );

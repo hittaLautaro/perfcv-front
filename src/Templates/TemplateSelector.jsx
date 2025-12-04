@@ -1,95 +1,78 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Filter, Sparkles } from "lucide-react";
+import { Search, Filter, Sparkles, Loader2 } from "lucide-react";
 import TemplateCard from "./TemplateCard";
 import { useAuth } from "../context/AuthContext";
 
-// Mock Data
-const MOCK_TEMPLATES = [
-  {
-    id: 1,
-    title: "Professional Modern",
-    displayName: "Professional Modern",
-    price: 0,
-    tags: ["Professional", "Clean", "ATS-Friendly"],
-    image: "https://placehold.co/600x800/e2e8f0/475569?text=Professional+Modern",
-    category: "Modern"
-  },
-  {
-    id: 2,
-    title: "Creative Designer",
-    displayName: "Creative Designer",
-    price: 4.99,
-    tags: ["Creative", "Colorful", "Portfolio"],
-    image: "https://placehold.co/600x800/fef3c7/d97706?text=Creative+Designer",
-    category: "Creative"
-  },
-  {
-    id: 3,
-    title: "Executive Suite",
-    displayName: "Executive Suite",
-    price: 9.99,
-    tags: ["Executive", "Minimalist", "Premium"],
-    image: "https://placehold.co/600x800/1e293b/94a3b8?text=Executive+Suite",
-    category: "Premium"
-  },
-  {
-    id: 4,
-    title: "Tech Minimalist",
-    displayName: "Tech Minimalist",
-    price: 0,
-    tags: ["Tech", "Simple", "Code"],
-    image: "https://placehold.co/600x800/f0f9ff/0ea5e9?text=Tech+Minimalist",
-    category: "Simple"
-  },
-  {
-    id: 5,
-    title: "Bold Statement",
-    displayName: "Bold Statement",
-    price: 2.99,
-    tags: ["Bold", "Unique", "Marketing"],
-    image: "https://placehold.co/600x800/fee2e2/ef4444?text=Bold+Statement",
-    category: "Creative"
-  },
-  {
-    id: 6,
-    title: "Classic Chronological",
-    displayName: "Classic Chronological",
-    price: 0,
-    tags: ["Classic", "Traditional", "Academic"],
-    image: "https://placehold.co/600x800/f8fafc/64748b?text=Classic+Chronological",
-    category: "Simple"
-  },
-  {
-    id: 7,
-    title: "Startup Founder",
-    displayName: "Startup Founder",
-    price: 14.99,
-    tags: ["Startup", "Modern", "Versatile"],
-    image: "https://placehold.co/600x800/f0fdf4/16a34a?text=Startup+Founder",
-    category: "Premium"
-  },
-  {
-    id: 8,
-    title: "Academic CV",
-    displayName: "Academic CV",
-    price: 0,
-    tags: ["Academic", "Detailed", "Research"],
-    image: "https://placehold.co/600x800/fff7ed/ea580c?text=Academic+CV",
-    category: "Simple"
-  }
-];
 
-const FILTERS = ["All", "Modern", "Creative", "Simple", "Premium"];
 
 const TemplateSelector = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
+  const [templates, setTemplates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const headers = {
+          "Content-Type": "application/json",
+        };
+        
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        console.log("Fetching templates with token:", token ? "Present" : "Missing");
+
+        const response = await fetch("http://localhost:8080/api/templates", {
+          headers,
+          credentials: "include",
+        });
+
+        if (response.status === 403) {
+          throw new Error("Access denied. Please log in to view templates.");
+        }
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch templates");
+        }
+
+        const data = await response.json();
+        
+        const mappedTemplates = data.map(template => ({
+          id: template.id,
+          title: template.name,
+          displayName: template.name,
+          price: template.price ? Number(template.price) : 0,
+          tags: [template.category, template.isPremium ? "Premium" : "Free"].filter(Boolean),
+          image: template.previewUrl,
+          category: template.category
+        }));
+
+        setTemplates(mappedTemplates);
+      } catch (err) {
+        console.error("Error fetching templates:", err);
+        setError(err.message || "Failed to load templates. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTemplates();
+  }, []);
+
+  const filters = useMemo(() => {
+    const categories = templates.map(t => t.category).filter(Boolean);
+    return ["All", ...new Set(categories)];
+  }, [templates]);
 
   const filteredTemplates = useMemo(() => {
-    return MOCK_TEMPLATES.filter((template) => {
+    return templates.filter((template) => {
       const matchesSearch = template.title
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
@@ -97,20 +80,81 @@ const TemplateSelector = () => {
         activeFilter === "All" || template.category === activeFilter;
       return matchesSearch && matchesFilter;
     });
-  }, [searchQuery, activeFilter]);
+  }, [searchQuery, activeFilter, templates]);
 
-  const handleTemplateSelect = (template) => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handlePreview = (template) => {
+    setSelectedImage(template.image);
+  };
+
+  const handleTemplateSelect = async (template) => {
     if (!isAuthenticated) {
       navigate("/auth/login");
       return;
     }
-    // Logic for purchasing/using template would go here
-    alert(`You selected ${template.title}. Since you are logged in, you can proceed!`);
+
+    try {
+      const token = localStorage.getItem("accessToken");
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const response = await fetch(`http://localhost:8080/api/templates/${template.id}/download`, {
+        headers,
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to get download URL");
+      }
+
+      const data = await response.json();
+      
+      if (data.downloadUrl) {
+        // Create a temporary link to trigger the download
+        const link = document.createElement('a');
+        link.href = data.downloadUrl;
+        link.download = `${template.title}.pdf`; // Suggest a filename
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (err) {
+      console.error("Error downloading template:", err);
+      alert("Failed to download template. Please try again.");
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-red-500">{error}</p>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="mt-4 text-amber-500 hover:underline"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Header Section */}
+
       <div className="mb-10 text-center">
         <h1 className="text-4xl md:text-5xl font-extrabold text-zinc-100 mb-4 tracking-tight">
           Find Your Perfect <span className="text-amber-500">Resume</span>
@@ -120,9 +164,9 @@ const TemplateSelector = () => {
         </p>
       </div>
 
-      {/* Search and Filter Bar */}
+
       <div className="mb-10 flex flex-col md:flex-row gap-4 justify-between items-center bg-zinc-900 p-4 rounded-2xl shadow-sm border border-zinc-800">
-        {/* Search */}
+
         <div className="relative w-full md:w-96">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Search className="h-5 w-5 text-zinc-500" />
@@ -136,9 +180,9 @@ const TemplateSelector = () => {
           />
         </div>
 
-        {/* Filters */}
+
         <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto no-scrollbar">
-          {FILTERS.map((filter) => (
+          {filters.map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
@@ -154,24 +198,25 @@ const TemplateSelector = () => {
         </div>
       </div>
 
-      {/* Results Count */}
+
       <div className="mb-6 flex items-center gap-2 text-zinc-500 text-sm font-medium">
         <Sparkles className="w-4 h-4 text-amber-500" />
         {filteredTemplates.length} templates found
       </div>
 
-      {/* Masonry Grid */}
+
       <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 pb-20">
         {filteredTemplates.map((template) => (
           <TemplateCard
             key={template.id}
             template={template}
             onSelect={handleTemplateSelect}
+            onPreview={handlePreview}
           />
         ))}
       </div>
 
-      {/* Empty State */}
+
       {filteredTemplates.length === 0 && (
         <div className="text-center py-20">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-zinc-900 mb-4">
@@ -187,6 +232,29 @@ const TemplateSelector = () => {
           >
             Clear all filters
           </button>
+        </div>
+      )}
+
+
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button 
+            className="absolute top-6 right-6 text-zinc-400 hover:text-white bg-black/50 hover:bg-zinc-800 rounded-full p-2 transition-all z-50"
+            onClick={() => setSelectedImage(null)}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+          <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center">
+            <img 
+              src={selectedImage} 
+              alt="Template Preview" 
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, FileText } from "lucide-react";
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -11,9 +11,11 @@ const Header = () => {
         <div className="flex space-x-8 items-center">
           <NavLink
             to="/"
-            className="text-4xl pb-1 text-zinc-100 font-bold font-sans rounded transition-colors duration-300 underline decoration-zinc-950 hover:decoration-amber-400"
+            className="flex items-center gap-2 group"
           >
-            PerfCV
+            <span className="text-2xl font-bold text-zinc-100 tracking-tight group-hover:text-white transition-colors">
+              Perf<span className="text-amber-500">CV</span>
+            </span>
           </NavLink>
         </div>
 
