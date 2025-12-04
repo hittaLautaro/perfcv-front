@@ -157,11 +157,14 @@ const TemplateSelector = () => {
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
       <div className="mb-16 mt-10 text-center">
-        <h1 className="text-4xl text-5xl font-bold text-zinc-200 mb-4 tracking-tight">
+        <h1 className="text-4xl text-5xl font-bold text-white mb-4 tracking-tight">
           Resume templates
         </h1>
         <p className="text-md text-zinc-300 max-w-2xl mx-auto">
-          All of our templates are designed to have the maximum chances to get you hired.
+          All of our templates are designed to give you the best chances to
+          <span className="font-semibold">
+            {" "}get you hired.
+          </span>
         </p>
       </div>
 
@@ -211,7 +214,7 @@ const TemplateSelector = () => {
           </p>
           <button 
             onClick={() => {setSearchQuery(""); setActiveFilter("All");}}
-            className="mt-6 text-amber-500 font-semibold hover:text-amber-400 hover:underline"
+            className="mt-6 text-zinc-400 font-semibold hover:text-zinc-300 hover:underline"
           >
             Clear all filters
           </button>

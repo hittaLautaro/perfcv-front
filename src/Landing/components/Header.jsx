@@ -23,21 +23,21 @@ const Header = () => {
             <>
               <NavLink
                 to={"/templates"}
-                className="flex items-center gap-2 duration-150 text-md px-5 py-2 font-sans text-white"
+                className="flex items-center gap-2 duration-150 text-md px-5 py-2 font-sans text-zinc-400"
               >
                 <FileText size={15} />
                 Resume templates
               </NavLink>
               <NavLink
                 to={"/account"}
-                className="flex items-center gap-2 duration-150 text-md px-5 py-2 font-sans text-white"
+                className="flex items-center gap-2 duration-150 text-md px-5 py-2 font-sans text-zinc-400"
               >
                 <User size={15} />
                 Account
               </NavLink>
               <button
                 onClick={logout}
-                className="flex items-center gap-2 duration-150 text-md border border-zinc-700 bg-zinc-800 px-4 py-1 rounded-xl font font-sans text-white hover:bg-zinc-700"
+                className="flex items-center gap-2 duration-150 text-md px-5 py-2 font-sans text-zinc-400"
               >
                 <LogOut size={15} />
                 Logout
