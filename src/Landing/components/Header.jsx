@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { LogOut, User } from "lucide-react";
+import { FileText, LogOut, ShoppingCart, User } from "lucide-react";
 import logo from "../../assets/PERFCV_LOGO.svg";
 
 const Header = () => {
@@ -22,19 +22,33 @@ const Header = () => {
           {isAuthenticated ? (
             <>
               <NavLink
-                to="/account"
-                className="flex items-center gap-2 text-zinc-200 font-medium hover:text-amber-400 transition-colors"
+                to={"/templates"}
+                className="flex items-center gap-2 duration-150 text-md px-5 py-2 rounded-xl font-medium font-sans text-white"
               >
-                <User size={20} />
+                <FileText size={18} />
+                Resume templates
+              </NavLink>
+              <NavLink
+                to={"/account"}
+                className="flex items-center gap-2 duration-150 text-md px-5 py-2 rounded-xl font-medium font-sans text-white"
+              >
+                <User size={18} />
                 Account
               </NavLink>
               <button
                 onClick={logout}
-                className="flex items-center gap-2 duration-150 text-md border border-zinc-700 bg-zinc-800 px-5 py-2 rounded-xl font-medium font-sans text-white hover:bg-zinc-700"
+                className="flex items-center gap-2 duration-150 text-md px-5 py-2 rounded-xl font-medium font-sans text-white"
               >
                 <LogOut size={18} />
                 Logout
               </button>
+              <NavLink
+                to={"/cart"}
+                className="flex items-center gap-1 duration-150 text-xs px-5 py-2 rounded-xl font-medium font-sans text-amber-400"
+              >
+                <ShoppingCart size={18} />
+                2
+              </NavLink>
             </>
           ) : (
             <>

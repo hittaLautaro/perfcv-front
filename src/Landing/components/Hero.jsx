@@ -1,5 +1,5 @@
 import React from "react";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, CornerDownRight } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const Hero = ({ isVisible }) => {
@@ -15,15 +15,16 @@ const Hero = ({ isVisible }) => {
           <span className="underline decoration-amber-400 text-amber-400">Perfect CV</span> to
           land a job
         </h1>
-        <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-zinc-400 text-center font-normal mt-5">
+        <p className="font-mono text-lg md:text-xl lg:text-2xl xl:text-3xl text-zinc-400 text-center font-normal mt-5">
           Use our templates to build ATS proof resumes
         </p>
         <NavLink
           to={"/templates"}
-          className="block bg-white text-black text-xl mt-10 px-6 py-4 rounded-xl font-semibold font-mono border border-white hover:bg-amber-400 hover:text-black hover:border-amber-400 transition-colors duration-500"
+          className="flex items-center gap-2 block bg-white text-black text-xl mt-10 px-4 py-3 rounded-xl font-semibold font-mono border border-white hover:bg-amber-400 hover:text-black hover:border-amber-400 transition-colors duration-500"
         >
+          <CornerDownRight size={20} />
           {" "}
-          View resumes
+          View our templates!
         </NavLink>
       </div>
     </section>
