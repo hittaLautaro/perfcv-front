@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { LogOut, User, FileText } from "lucide-react";
+import { LogOut, User } from "lucide-react";
+import logo from "../../assets/PERFCV_LOGO.svg";
 
 const Header = () => {
   const { isAuthenticated, logout } = useAuth();
@@ -13,9 +14,7 @@ const Header = () => {
             to="/"
             className="flex items-center gap-2 group"
           >
-            <span className="text-2xl font-bold text-zinc-100 tracking-tight group-hover:text-white transition-colors">
-              Perf<span className="text-amber-500">CV</span>
-            </span>
+            <img src={logo} alt="PerfCV Logo" className="h-10 w-auto" />
           </NavLink>
         </div>
 

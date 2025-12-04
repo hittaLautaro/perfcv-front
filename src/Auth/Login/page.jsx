@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "../../context/AuthContext.jsx";
 
+import logo from "../../assets/PERFCV_LOGO.svg";
+
 const LoginPage = () => {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
@@ -26,9 +28,9 @@ const LoginPage = () => {
       <div className="flex flex-col justify-center items-center min-h-[calc(100vh-80px)] px-4">
         <NavLink
           to={"/"}
-          className="text-4xl pb-1 text-zinc-100 font-bold font-sans rounded transition-colors duration-300 underline decoration-amber-400 mb-12"
+          className="mb-12"
         >
-          PerfCV
+          <img src={logo} alt="PerfCV Logo" className="h-16 w-auto" />
         </NavLink>
 
         <div className="bg-zinc-900 p-8 rounded-xl shadow-md w-full max-w-md border-zinc-800 border">
