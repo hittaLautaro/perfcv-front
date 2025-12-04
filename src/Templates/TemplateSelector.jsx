@@ -67,8 +67,10 @@ const TemplateSelector = () => {
   }, []);
 
   const filters = useMemo(() => {
-    const categories = templates.map(t => t.category).filter(Boolean);
-    return ["All", ...new Set(categories)];
+    const dynamicCategories = templates.map(t => t.category).filter(Boolean);
+    const predefined = ["All", "ATS", "Creative", "Professional", "Modern"];
+    const unique = [...new Set([...predefined, ...dynamicCategories])];
+    return unique.slice(0, 6);
   }, [templates]);
 
   const filteredTemplates = useMemo(() => {
@@ -116,10 +118,9 @@ const TemplateSelector = () => {
       const data = await response.json();
       
       if (data.downloadUrl) {
-        // Create a temporary link to trigger the download
         const link = document.createElement('a');
         link.href = data.downloadUrl;
-        link.download = `${template.title}.pdf`; // Suggest a filename
+        link.download = `${template.title}.pdf`; 
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -155,33 +156,18 @@ const TemplateSelector = () => {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      <div className="mb-10 text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-zinc-100 mb-4 tracking-tight">
-          Find Your Perfect <span className="text-amber-500">Resume</span>
+      <div className="mb-16 mt-10 text-center">
+        <h1 className="text-4xl text-5xl font-bold text-zinc-200 mb-4 tracking-tight">
+          Resume templates
         </h1>
-        <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
-          Browse our collection of professionally designed templates. Stand out from the crowd with a resume that represents you.
+        <p className="text-md text-zinc-300 max-w-2xl mx-auto">
+          All of our templates are designed to have the maximum chances to get you hired.
         </p>
       </div>
 
 
-      <div className="mb-10 flex flex-col md:flex-row gap-4 justify-between items-center bg-zinc-900 p-4 rounded-2xl shadow-sm border border-zinc-800">
-
-        <div className="relative w-full md:w-96">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-zinc-500" />
-          </div>
-          <input
-            type="text"
-            className="block w-full pl-10 pr-3 py-2.5 border border-zinc-700 rounded-xl leading-5 bg-zinc-800 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:bg-zinc-800 focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all duration-200"
-            placeholder="Search templates..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-
-
-        <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto no-scrollbar">
+      <div className="mb-10 flex justify-center items-center rounded-2xl shadow-sm ">
+        <div className="flex items-center justify-center gap-2 overflow-x-auto pb-2 md:pb-0 w-full no-scrollbar">
           {filters.map((filter) => (
             <button
               key={filter}
@@ -198,12 +184,10 @@ const TemplateSelector = () => {
         </div>
       </div>
 
-
       <div className="mb-6 flex items-center gap-2 text-zinc-500 text-sm font-medium">
         <Sparkles className="w-4 h-4 text-amber-500" />
         {filteredTemplates.length} templates found
       </div>
-
 
       <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 pb-20">
         {filteredTemplates.map((template) => (
@@ -215,7 +199,6 @@ const TemplateSelector = () => {
           />
         ))}
       </div>
-
 
       {filteredTemplates.length === 0 && (
         <div className="text-center py-20">
@@ -234,8 +217,7 @@ const TemplateSelector = () => {
           </button>
         </div>
       )}
-
-
+    
       {selectedImage && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"

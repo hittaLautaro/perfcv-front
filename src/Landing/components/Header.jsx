@@ -23,32 +23,25 @@ const Header = () => {
             <>
               <NavLink
                 to={"/templates"}
-                className="flex items-center gap-2 duration-150 text-md px-5 py-2 rounded-xl font-medium font-sans text-white"
+                className="flex items-center gap-2 duration-150 text-md px-5 py-2 font-sans text-white"
               >
-                <FileText size={18} />
+                <FileText size={15} />
                 Resume templates
               </NavLink>
               <NavLink
                 to={"/account"}
-                className="flex items-center gap-2 duration-150 text-md px-5 py-2 rounded-xl font-medium font-sans text-white"
+                className="flex items-center gap-2 duration-150 text-md px-5 py-2 font-sans text-white"
               >
-                <User size={18} />
+                <User size={15} />
                 Account
               </NavLink>
               <button
                 onClick={logout}
-                className="flex items-center gap-2 duration-150 text-md px-5 py-2 rounded-xl font-medium font-sans text-white"
+                className="flex items-center gap-2 duration-150 text-md border border-zinc-700 bg-zinc-800 px-4 py-1 rounded-xl font font-sans text-white hover:bg-zinc-700"
               >
-                <LogOut size={18} />
+                <LogOut size={15} />
                 Logout
               </button>
-              <NavLink
-                to={"/cart"}
-                className="flex items-center gap-1 duration-150 text-xs px-5 py-2 rounded-xl font-medium font-sans text-amber-400"
-              >
-                <ShoppingCart size={18} />
-                2
-              </NavLink>
             </>
           ) : (
             <>
