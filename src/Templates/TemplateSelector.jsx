@@ -120,6 +120,7 @@ const TemplateSelector = () => {
       if (data.downloadUrl) {
         const link = document.createElement('a');
         link.href = data.downloadUrl;
+        link.target = "_blank";
         link.download = `${template.title}.pdf`; 
         document.body.appendChild(link);
         link.click();
