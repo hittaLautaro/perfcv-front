@@ -12,10 +12,6 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleOAuth = () => {
-    console.log("Google login");
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -31,8 +27,7 @@ const SignupPage = () => {
     }
 
     try {
-      // Sending a default date to satisfy backend requirement since field was removed from UI
-      await register({ name, email, password, dateOfBirth: "2000-01-01" });
+      await register({ name, email, password });
     } catch (err) {
       setError(err.message);
     }
@@ -54,9 +49,8 @@ const SignupPage = () => {
           </h2>
 
           <button
-            onClick={handleOAuth}
-            disabled={true}
-            className="flex items-center justify-center cursor-not-allowed bg-zinc-800 border border-zinc-700 rounded-md w-full px-4 py-2 shadow-sm hover:shadow-md transition-shadow duration-300"
+            onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}
+            className="flex items-center justify-center bg-zinc-800 border border-zinc-700 rounded-md w-full px-4 py-2 shadow-sm hover:shadow-md hover:bg-zinc-750 transition-all duration-300"
           >
             <svg
               className="w-6 h-6 mr-3"

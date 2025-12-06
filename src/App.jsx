@@ -12,6 +12,7 @@ import PrivateLayout from "./layouts/PrivateLayout.jsx";
 import PublicLayout from "./layouts/PublicLayout.jsx";
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 import LoadingPage from "./global/components/LoadingPage.jsx";
+import OAuthCallback from "./Auth/Callback/page.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +39,7 @@ function AppRoutes() {
       <Route element={<PublicLayout />}>
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/signup" element={<SignupPage />} />
+        <Route path="/auth/callback" element={<OAuthCallback />} />
       </Route>
       <Route element={<PrivateLayout />}>
         <Route path="/account" element={<AccountPage />} />

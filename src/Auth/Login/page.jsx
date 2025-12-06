@@ -10,10 +10,6 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleOAuth = () => {
-    console.log("Google login");
-  };
-
   const mutation = useMutation({
     mutationFn: ({ email, password }) => login({ email, password }),
   });
@@ -39,9 +35,8 @@ const LoginPage = () => {
           </h2>
 
           <button
-            onClick={handleOAuth}
-            disabled={true}
-            className="flex items-center justify-center cursor-not-allowed bg-zinc-800 border border-zinc-700 rounded-md w-full px-4 py-2 shadow-sm hover:shadow-md transition-shadow duration-300 "
+            onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}
+            className="flex items-center justify-center bg-zinc-800 border border-zinc-700 rounded-md w-full px-4 py-2 shadow-sm hover:shadow-md hover:bg-zinc-750 transition-all duration-300"
           >
             <svg
               className="w-6 h-6 mr-3"
