@@ -23,9 +23,9 @@ const AccountPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 pt-24 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex flex-col bg-zinc-950 pt-24">
       <Header />
-      <div className="max-w-3xl mx-auto py-10">
+      <div className="w-full max-w-3xl mx-auto py-10">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Account Settings</h1>
           <p className="text-zinc-400">Manage your personal information and preferences.</p>

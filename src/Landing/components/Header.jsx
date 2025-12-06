@@ -46,17 +46,27 @@ const Header = () => {
           ) : (
             <>
               <NavLink
-                to={"/auth/login"}
-                className="duration-150 text-md border border-zinc-700 bg-zinc-800 px-5 py-2 rounded-xl font-medium font-sans text-white hover:bg-zinc-700"
+                to={"/templates"}
+                className="flex items-center gap-2 duration-150 text-md px-5 py-2 font-sans text-zinc-400"
               >
-                Log in
+                <FileText size={15} />
+                Resume templates
               </NavLink>
+              <div className="flex gap-2 px-3">
+                <NavLink
+                  to={"/auth/login"}
+                  className="duration-150 text-md border border-zinc-700 bg-zinc-800 px-5 py-2 rounded-xl font-medium font-sans text-white hover:bg-zinc-700"
+                >
+                  Log in
+                </NavLink>
               <NavLink
                 to={"/auth/signup"}
                 className="duration-150 text-md border border-amber-400 bg-amber-400 px-5 py-2 rounded-xl font-medium font-sans text-black hover:bg-amber-300"
               >
                 Signup
               </NavLink>
+              </div>
+              
             </>
           )}
         </div>

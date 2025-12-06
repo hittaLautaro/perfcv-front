@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import LoginPage from "./Auth/Login/page.jsx";
 import SignupPage from "./Auth/Signup/page.jsx";
 import TemplatesPage from "./Templates/page.jsx";
+import TemplateDetail from "./Templates/TemplateDetail.jsx";
 import LandingPage from "./Landing/page.jsx";
 import AccountPage from "./Account/page.jsx";
 
@@ -33,6 +34,7 @@ function AppRoutes() {
         element={isAuthenticated ? <Navigate to="/templates" /> : <LandingPage />}
       />
       <Route path="/templates" element={<TemplatesPage />} />
+      <Route path="/templates/:id" element={<TemplateDetail />} />
       <Route element={<PublicLayout />}>
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/signup" element={<SignupPage />} />

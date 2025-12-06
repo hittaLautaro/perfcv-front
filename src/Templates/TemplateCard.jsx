@@ -1,4 +1,4 @@
-import { Eye, Download } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 const TemplateCard = ({ template, onSelect, onPreview }) => {
   return (
@@ -14,17 +14,10 @@ const TemplateCard = ({ template, onSelect, onPreview }) => {
         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 p-4">
           <button
             onClick={() => onSelect(template)}
-            className="bg-amber-200 hover:bg-amber-200 text-black font-semibold py-2 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 flex items-center gap-2 shadow-lg"
+            className="bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 px-8 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl flex items-center gap-2"
           >
-            <Download size={18} />
-            Download
-          </button>
-          <button 
-            onClick={() => onPreview(template)}
-            className="bg-zinc-800/90 hover:bg-zinc-800 text-white font-medium py-2 px-6 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75 flex items-center gap-2 shadow-lg backdrop-blur-sm"
-          >
-            <Eye size={18} />
-            Preview
+            <Sparkles size={20} />
+            Use this template
           </button>
         </div>
 
@@ -34,21 +27,14 @@ const TemplateCard = ({ template, onSelect, onPreview }) => {
       </div>
 
       <div className="p-4">
-        <div className="flex justify-between items-start mb-2">
+        <div className="flex flex-col justify-between items-start mb-2">
           <h3 className="font-bold text-lg text-zinc-100 leading-tight transition-colors">
             {template.title}
           </h3>
-        </div>
 
-        <div className="flex flex-wrap gap-2 mt-3">
-          {template.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-2 py-1 bg-zinc-800 text-zinc-400 text-xs rounded-md font-medium"
-            >
-              {tag}
-            </span>
-          ))}
+          <p className="font-normal text-xs text-zinc-400 leading-tight line-clamp-1">
+            {template.description}
+          </p>
         </div>
       </div>
     </div>
