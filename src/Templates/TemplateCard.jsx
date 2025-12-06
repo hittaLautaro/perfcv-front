@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+import { MousePointerClick, Sparkles } from "lucide-react";
 
 const TemplateCard = ({ template, onSelect, onPreview }) => {
   return (
@@ -14,9 +14,9 @@ const TemplateCard = ({ template, onSelect, onPreview }) => {
         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 p-4">
           <button
             onClick={() => onSelect(template)}
-            className="bg-amber-400 hover:bg-amber-300 text-black font-bold py-3 px-8 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl flex items-center gap-2"
+            className="bg-amber-400 hover:bg-amber-300 text-black font-bold py-2 px-5 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-xl flex items-center gap-2 text-sm"
           >
-            <Sparkles size={20} />
+            <MousePointerClick size={20} />
             Use this template
           </button>
         </div>
