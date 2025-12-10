@@ -45,13 +45,13 @@ const Header = () => {
             </>
           ) : (
             <>
-              <NavLink
+              {/* <NavLink
                 to={"/templates"}
                 className="flex items-center gap-2 duration-150 text-md px-5 py-2 font-sans text-zinc-400"
               >
                 <FileText size={15} />
                 Resume templates
-              </NavLink>
+              </NavLink> */}
               <div className="flex gap-2 px-3">
                 <NavLink
                   to={"/auth/login"}
