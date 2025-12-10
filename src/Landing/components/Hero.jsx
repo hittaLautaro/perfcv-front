@@ -16,9 +16,11 @@ const Hero = ({ isVisible }) => {
           land a job
         </h1>
         <p className="font-sans italic text-lg md:text-xl lg:text-2xl xl:text-2xl text-zinc-300 text-center font-normal mt-5">
-          Our templates are designed to give you the best chances to{" "}
+          Choose from any of our <span className="font-bold">
+            free & ATS-friendly
+          </span> templates to give you the best chances to{" "}
           <span className="font-bold">
-            get you hired.
+            get hired.
           </span>
         </p>
         <NavLink
