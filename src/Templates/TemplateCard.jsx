@@ -2,7 +2,7 @@ import { MousePointerClick, Sparkles } from "lucide-react";
 
 const TemplateCard = ({ template, onSelect, onPreview }) => {
   return (
-    <div className="group relative break-inside-avoid mb-6 rounded-xl overflow-hidden bg-zinc-900 transition-all duration-300 border border-zinc-800">
+    <div className="group relative rounded-xl overflow-hidden bg-zinc-900 transition-all duration-300 border border-zinc-800">
 
       <div className="relative aspect-[3/4] overflow-hidden bg-zinc-800">
         <img
