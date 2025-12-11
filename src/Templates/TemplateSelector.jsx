@@ -26,7 +26,7 @@ const TemplateSelector = () => {
 
         console.log("Fetching templates with token:", token ? "Present" : "Missing");
 
-        const response = await fetch("http://localhost:8080/api/templates", {
+        const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates`, {
           headers,
           credentials: "include",
         });

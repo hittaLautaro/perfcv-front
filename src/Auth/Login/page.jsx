@@ -35,7 +35,7 @@ const LoginPage = () => {
           </h2>
 
           <button
-            onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}
+            onClick={() => window.location.href = `${import.meta.env.VITE_BACK_BASE_URL}/oauth2/authorization/google`}
             className="flex items-center justify-center bg-zinc-800 border border-zinc-700 rounded-md w-full px-4 py-2 shadow-sm hover:shadow-md hover:bg-zinc-750 transition-all duration-300"
           >
             <svg

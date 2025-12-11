@@ -21,7 +21,7 @@ const TemplateDetail = () => {
           const headers = { "Content-Type": "application/json" };
           if (token) headers["Authorization"] = `Bearer ${token}`;
 
-          const response = await fetch("http://localhost:8080/api/templates", { headers });
+          const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates`, { headers });
           if (!response.ok) throw new Error("Failed to load templates");
           
           const data = await response.json();
@@ -61,7 +61,7 @@ const TemplateDetail = () => {
       const headers = { "Content-Type": "application/json" };
       headers["Authorization"] = `Bearer ${token}`;
 
-      const response = await fetch(`http://localhost:8080/api/templates/${id}/download?format=${format}`, {
+      const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates/${id}/download?format=${format}`, {
         headers,
       });
 

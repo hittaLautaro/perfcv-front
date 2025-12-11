@@ -9,7 +9,7 @@ const useAuth = () => {
   const login = useCallback(
     async (credentials) => {
       const response = await fetch(
-        "http://localhost:8080/api/auth/authenticate",
+        `${import.meta.env.VITE_BACK_BASE_URL}/api/auth/authenticate`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -27,7 +27,7 @@ const useAuth = () => {
       localStorage.setItem("accessToken", data.accessToken);
 
       try {
-        const userResponse = await fetch("http://localhost:8080/api/auth/me", {
+        const userResponse = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${data.accessToken}`,
             "Content-Type": "application/json",
@@ -52,7 +52,7 @@ const useAuth = () => {
   const register = useCallback(
     async (credentials) => {
       const response = await fetch(
-        "http://localhost:8080/api/auth/register",
+        `${import.meta.env.VITE_BACK_BASE_URL}/api/auth/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -70,7 +70,7 @@ const useAuth = () => {
       localStorage.setItem("accessToken", data.accessToken);
 
       try {
-        const userResponse = await fetch("http://localhost:8080/api/auth/me", {
+        const userResponse = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${data.accessToken}`,
             "Content-Type": "application/json",
@@ -108,7 +108,7 @@ const useAuth = () => {
 
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/auth/me", {
+        const res = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
