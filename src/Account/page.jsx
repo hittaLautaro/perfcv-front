@@ -57,18 +57,6 @@ const AccountPage = () => {
                 </div>
               </div>
             </div>
-
-            <div className="pt-4 border-t border-zinc-800/50">
-               <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-sm font-medium text-zinc-300 mb-1">Account Type</h3>
-                    <p className="text-xs text-zinc-500">Your current subscription status</p>
-                  </div>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
-                    Free Plan
-                  </span>
-               </div>
-            </div>
           </div>
         </div>
 
