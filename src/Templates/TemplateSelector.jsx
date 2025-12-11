@@ -91,7 +91,7 @@ const TemplateSelector = () => {
         <p className="text-red-500">{error}</p>
         <button 
           onClick={() => window.location.reload()} 
-          className="mt-4 text-amber-500 hover:underline"
+          className="mt-4 text-amber-500"
         >
           Retry
         </button>
