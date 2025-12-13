@@ -1,68 +1,56 @@
-import { useState, useMemo, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Filter, Sparkles, Loader2 } from "lucide-react";
+import { Filter, Sparkles, Loader2 } from "lucide-react";
 import TemplateCard from "./TemplateCard";
 
+const fetchTemplates = async () => {
+    const token = localStorage.getItem("accessToken");
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
 
+    console.log("Fetching templates with token:", token ? "Present" : "Missing");
+
+    const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates`, {
+      headers,
+      credentials: "include",
+    });
+
+    if (response.status === 403) {
+      throw new Error("Access denied. Please log in to view templates.");
+    }
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch templates");
+    }
+
+    const data = await response.json();
+    
+    return data.map(template => ({
+      id: template.id,
+      title: template.name,
+      displayName: template.name,
+      price: template.price ? Number(template.price) : 0,
+      tags: [template.isPremium ? "Premium" : "Free"].filter(Boolean),
+      image: template.previewUrl,
+      categories: template.categories || [],
+      description: template.description
+    }));
+};
 
 const TemplateSelector = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const [templates, setTemplates] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchTemplates = async () => {
-      try {
-        const token = localStorage.getItem("accessToken");
-        const headers = {
-          "Content-Type": "application/json",
-        };
-        
-        if (token) {
-          headers["Authorization"] = `Bearer ${token}`;
-        }
-
-        console.log("Fetching templates with token:", token ? "Present" : "Missing");
-
-        const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates`, {
-          headers,
-          credentials: "include",
-        });
-
-        if (response.status === 403) {
-          throw new Error("Access denied. Please log in to view templates.");
-        }
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch templates");
-        }
-
-        const data = await response.json();
-        
-        const mappedTemplates = data.map(template => ({
-          id: template.id,
-          title: template.name,
-          displayName: template.name,
-          price: template.price ? Number(template.price) : 0,
-          tags: [template.isPremium ? "Premium" : "Free"].filter(Boolean),
-          image: template.previewUrl,
-          categories: template.categories || [],
-          description: template.description
-        }));
-
-        setTemplates(mappedTemplates);
-      } catch (err) {
-        console.error("Error fetching templates:", err);
-        setError(err.message || "Failed to load templates. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTemplates();
-  }, []);
+  const { data: templates = [], isLoading, error } = useQuery({
+    queryKey: ['templates'],
+    queryFn: fetchTemplates,
+  });
 
   const filteredTemplates = useMemo(() => {
     return templates.filter((template) => {
@@ -77,7 +65,7 @@ const TemplateSelector = () => {
       navigate(`/templates/${template.id}`, { state: { template } });
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <Loader2 className="w-8 h-8 text-zinc-400 animate-spin" />
@@ -88,7 +76,7 @@ const TemplateSelector = () => {
   if (error) {
     return (
       <div className="text-center py-20">
-        <p className="text-red-500">{error}</p>
+        <p className="text-red-500">{error.message}</p>
         <button 
           onClick={() => window.location.reload()} 
           className="mt-4 text-amber-500"
