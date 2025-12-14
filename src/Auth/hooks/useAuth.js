@@ -19,7 +19,13 @@ const useAuth = () => {
       );
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const text = await response.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(text);
+        } catch {
+          errorData = { message: text || "Login failed" };
+        }
         throw new Error(errorData.message || "Login failed");
       }
 
@@ -62,7 +68,13 @@ const useAuth = () => {
       );
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const text = await response.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(text);
+        } catch {
+          errorData = { message: text || "Registration failed" };
+        }
         throw new Error(errorData.message || "Registration failed");
       }
 
