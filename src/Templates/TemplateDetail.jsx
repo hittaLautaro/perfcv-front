@@ -21,11 +21,10 @@ const TemplateDetail = () => {
           const headers = { "Content-Type": "application/json" };
           if (token) headers["Authorization"] = `Bearer ${token}`;
 
-          const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates`, { headers });
-          if (!response.ok) throw new Error("Failed to load templates");
+          const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates/${id}`, { headers });
+          if (!response.ok) throw new Error("Failed to load template");
           
-          const data = await response.json();
-          const found = data.find(t => t.id.toString() === id);
+          const found = await response.json();
           
           if (found) {
              setTemplate({
