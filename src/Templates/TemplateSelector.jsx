@@ -14,8 +14,6 @@ const fetchTemplates = async () => {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    console.log("Fetching templates with token:", token ? "Present" : "Missing");
-
     const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates`, {
       headers,
       credentials: "include",
@@ -34,9 +32,6 @@ const fetchTemplates = async () => {
     return data.map(template => ({
       id: template.id,
       title: template.name,
-      displayName: template.name,
-      price: template.price ? Number(template.price) : 0,
-      tags: [template.isPremium ? "Premium" : "Free"].filter(Boolean),
       image: template.previewUrl,
       categories: template.categories || [],
       description: template.description

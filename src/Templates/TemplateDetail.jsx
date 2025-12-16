@@ -11,8 +11,6 @@ const TemplateDetail = () => {
   const [loading, setLoading] = useState(!template);
   const [downloading, setDownloading] = useState(false);
 
-  console.log(template)
-
   useEffect(() => {
     if (!template) {
       const fetchTemplate = async () => {
@@ -30,15 +28,11 @@ const TemplateDetail = () => {
              setTemplate({
               id: found.id,
               title: found.name,
-              displayName: found.name,
-              price: found.price ? Number(found.price) : 0,
-              tags: [found.isPremium ? "Premium" : "Free"].filter(Boolean),
               image: found.previewUrl,
               description: found.description
             });
           }
         } catch (error) {
-          console.error("Failed to fetch template:", error);
         } finally {
           setLoading(false);
         }
@@ -77,8 +71,6 @@ const TemplateDetail = () => {
         document.body.removeChild(link);
       }
     } catch (error) {
-      console.error("Download failed:", error);
-      alert("Failed to download template. Please try again.");
     } finally {
       setDownloading(false);
     }
@@ -130,20 +122,13 @@ const TemplateDetail = () => {
                 Go back
               </button>
               <h1 className="text-4xl font-bold text-white mb-4">{template.title}</h1>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {template.tags?.map(tag => (
-                  <span key={tag} className="px-3 py-1 bg-zinc-800 text-zinc-300 rounded-full text-sm">
-                    {tag}
-                  </span>
-                ))}
-              </div>
               <p className="text-zinc-400 text-lg leading-relaxed">
                 {template.description}
               </p>
             </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
-                <button
+                <button 
                   onClick={() => handleDownload("pdf")}
                   disabled={downloading}
                   className="flex flex-col items-center justify-center py-2 bg-red-500/10 hover:bg-red-500/30 border border-red-500/30 rounded-xl transition-all group"

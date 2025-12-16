@@ -46,7 +46,6 @@ const useAuth = () => {
           setUser(userData);
         }
       } catch (error) {
-        console.error("error fetching user:", error);
       }
 
       navigate("/");
@@ -95,7 +94,6 @@ const useAuth = () => {
           setUser(userData);
         }
       } catch (error) {
-        console.error("error fetching user:", error);
       }
 
       navigate("/");
@@ -107,7 +105,6 @@ const useAuth = () => {
   const logout = useCallback(() => {
     localStorage.removeItem("accessToken");
     setUser(null);
-    console.log("logged out");
     navigate("/");
   }, [navigate]);
 
@@ -136,7 +133,6 @@ const useAuth = () => {
           setUser(null);
         }
       } catch (error) {
-        console.error("Failed to fetch user:", error);
         localStorage.removeItem("accessToken");
         setUser(null);
       } finally {
@@ -148,8 +144,6 @@ const useAuth = () => {
   }, []);
 
   useEffect(() => {
-    console.log("User state changed:", user);
-    console.log("Is authenticated:", !!user);
   }, [user]);
 
   return { user, login, logout, register, isAuthenticated: !!user, loading };

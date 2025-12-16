@@ -8,8 +8,6 @@ const HomeRoute = () => {
 
   if (loading) return <LoadingPage />;
 
-  console.log(isAuthenticated);
-
   return isAuthenticated ? <Navigate to="/templates" /> : <LandingPage />;
 };
 
