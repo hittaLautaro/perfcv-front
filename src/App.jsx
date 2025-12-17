@@ -10,6 +10,7 @@ import AccountPage from "./Account/page.jsx";
 
 import PrivateLayout from "./layouts/PrivateLayout.jsx";
 import PublicLayout from "./layouts/PublicLayout.jsx";
+import MainLayout from "./layouts/MainLayout.jsx";
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 import LoadingPage from "./global/components/LoadingPage.jsx";
 import OAuthCallback from "./Auth/Callback/page.jsx";
@@ -30,19 +31,22 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={isAuthenticated ? <Navigate to="/templates" /> : <LandingPage />}
-      />
-      <Route path="/templates" element={<TemplatesPage />} />
-      <Route path="/templates/:id" element={<TemplateDetail />} />
+      <Route element={<MainLayout />}>
+        <Route
+          path="/"
+          element={isAuthenticated ? <Navigate to="/templates" /> : <LandingPage />}
+        />
+        <Route path="/templates" element={<TemplatesPage />} />
+        <Route path="/templates/:id" element={<TemplateDetail />} />
+        <Route element={<PrivateLayout />}>
+          <Route path="/account" element={<AccountPage />} />
+        </Route>
+      </Route>
+
       <Route element={<PublicLayout />}>
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/signup" element={<SignupPage />} />
         <Route path="/auth/callback" element={<OAuthCallback />} />
-      </Route>
-      <Route element={<PrivateLayout />}>
-        <Route path="/account" element={<AccountPage />} />
       </Route>
     </Routes>
   );
