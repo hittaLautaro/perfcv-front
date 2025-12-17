@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className="fixed top-0 w-full bg-zinc-950 z-50 border-b border-zinc-800">
+      <nav id="main-header" className="fixed top-0 w-full bg-zinc-950 z-50 border-b border-zinc-800">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center mt-2 ">
           <div className="flex space-x-8 items-center">
             <NavLink
