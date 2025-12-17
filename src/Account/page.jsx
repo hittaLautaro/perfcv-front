@@ -1,12 +1,45 @@
 import React, { useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { User, Mail, Shield, Calendar, LogOut } from "lucide-react";
+import { User, Mail, LogOut, Loader2} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import LogoutModal from "../global/components/LogoutModal";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchUser = async () => {
+    const token = localStorage.getItem("accessToken");
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/users/`, {
+      headers,
+      credentials: "include",
+    });
+
+    if (response.status === 403) {
+      throw new Error("Access denied. Please log in to view your account details.");
+    }
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch your account details");
+    }
+
+    const data = await response.json();
+
+    console.log(data)
+    
+    return data;
+};
 
 const AccountPage = () => {
-  const { user } = useAuth();
   const navigate = useNavigate();
+  const { data: user, isLoading, error } = useQuery({
+    queryKey: ['user'],
+    queryFn: fetchUser,
+  });
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   return (
@@ -23,26 +56,32 @@ const AccountPage = () => {
             Personal Information
           </h2>
         </div>
-        
-        <div className="p-6 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-400">Full Name</label>
-              <div className="flex items-center gap-3 p-3 bg-zinc-950/50 rounded-xl border border-zinc-800/50 text-zinc-200">
-                <User className="w-4 h-4 text-zinc-500" />
-                <span>{user.name || user.firstName ? `${user.firstName} ${user.lastName}` : "User"}</span>
-              </div>
-            </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-400">Email Address</label>
-              <div className="flex items-center gap-3 p-3 bg-zinc-950/50 rounded-xl border border-zinc-800/50 text-zinc-200">
-                <Mail className="w-4 h-4 text-zinc-500" />
-                <span>{user.email || "No email provided"}</span>
+        {isLoading ? (
+          <div className="flex justify-center items-center min-h-[140px]">
+            <Loader2 className="w-8 h-8 text-zinc-400 animate-spin" />
+          </div>
+        ) : (
+            <div className="p-6 space-y-6 min-h-[140px]">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-zinc-400">Full Name</label>
+                  <div className="flex items-center gap-3 p-3 bg-zinc-950/50 rounded-xl border border-zinc-800/50 text-zinc-200">
+                    <User className="w-4 h-4 text-zinc-500" />
+                    <span>{user ? user.name : "No name provided"}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-zinc-400">Email Address</label>
+                  <div className="flex items-center gap-3 p-3 bg-zinc-950/50 rounded-xl border border-zinc-800/50 text-zinc-200">
+                    <Mail className="w-4 h-4 text-zinc-500" />
+                    <span>{user ? user.email : "No email provided"}</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          )}
       </div>
 
       <div className="mt-6 flex justify-end">
