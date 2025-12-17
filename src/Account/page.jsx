@@ -7,21 +7,13 @@ const AccountPage = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center text-zinc-400">
-        <p>Please log in to view your account.</p>
-      </div>
-    );
-  }
-
   const handleLogout = () => {
     logout();
     navigate("/");
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto py-10 pt-24">
+    <div className="min-h-screen flex flex-col justify-center w-full max-w-3xl mx-auto py-10 pt-24">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-white mb-2">Account Settings</h1>
         <p className="text-zinc-400">Manage your personal information and preferences.</p>
@@ -30,7 +22,7 @@ const AccountPage = () => {
       <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden shadow-sm">
         <div className="p-6 border-b border-zinc-800">
           <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-            <User className="w-5 h-5 text-amber-500" />
+            <User className="w-5 h-5 text-zinc-500" />
             Personal Information
           </h2>
         </div>
