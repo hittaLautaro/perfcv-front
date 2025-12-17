@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "../../context/AuthContext.jsx";
 
 import logo from "../../assets/PERFCV_LOGO.svg";
+import { BiErrorCircle } from "react-icons/bi";
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -68,6 +69,14 @@ const LoginPage = () => {
           </div>
 
           <form onSubmit={handleSubmit}>
+
+            {mutation.isError && (
+              <div className="flex flex-row items-center border gap-3 border-red-600 bg-red-800/30 text-red-400 p-2 text-sm rounded-md mb-4">
+                <BiErrorCircle className="w-8 h-8 text-red-400" />
+                <p className="text-red-400 text-sm">Error trying to login, please try again later.</p>
+              </div>
+            )}
+
             <div className="mb-4">
               <label
                 htmlFor="email"
@@ -111,12 +120,6 @@ const LoginPage = () => {
             >
               {mutation.isLoading ? "Logging in..." : "Log in"}
             </button>
-
-            {mutation.isError && (
-              <p className="text-red-400 mt-3 text-center">
-                {mutation.error.message}
-              </p>
-            )}
 
             <p className="text-sm text-center text-zinc-400 mt-4">
               Don't have an account?{" "}
