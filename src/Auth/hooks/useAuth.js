@@ -107,6 +107,7 @@ const useAuth = () => {
       await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
+        redirect: "manual",
       });
     } catch (error) {
     }
