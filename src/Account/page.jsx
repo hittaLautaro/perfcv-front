@@ -1,16 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { User, Mail, Shield, Calendar, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import LogoutModal from "../global/components/LogoutModal";
 
 const AccountPage = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col justify-center w-full max-w-3xl mx-auto py-10 pt-24">
@@ -50,13 +47,18 @@ const AccountPage = () => {
 
       <div className="mt-6 flex justify-end">
         <button
-          onClick={handleLogout}
+          onClick={() => setIsLogoutModalOpen(true)}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-colors"
         >
           <LogOut className="w-4 h-4" />
           Sign out
         </button>
       </div>
+
+      <LogoutModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+      />
     </div>
   );
 };

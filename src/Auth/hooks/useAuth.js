@@ -102,7 +102,15 @@ const useAuth = () => {
     [navigate]
   );
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    try {
+      await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } catch (error) {
+    }
+
     localStorage.removeItem("accessToken");
     setUser(null);
     navigate("/");
