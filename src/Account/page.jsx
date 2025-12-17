@@ -10,7 +10,7 @@ const AccountPage = () => {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col justify-center w-full max-w-3xl mx-auto py-10 pt-24">
+    <div className="min-h-[calc(93vh)] flex flex-col justify-center w-full max-w-3xl mx-auto py-10 pt-24">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-white mb-2">Account Settings</h1>
         <p className="text-zinc-400">Manage your personal information and preferences.</p>
