@@ -3,6 +3,8 @@ import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Filter, Sparkles, Loader2 } from "lucide-react";
 import TemplateCard from "./TemplateCard";
+import TemplatesSectionHero from "./TemplatesSectionHero";
+import { BiErrorCircle } from "react-icons/bi";
 
 const fetchTemplates = async () => {
     const token = localStorage.getItem("accessToken");
@@ -33,7 +35,6 @@ const fetchTemplates = async () => {
       id: template.id,
       title: template.name,
       image: template.previewUrl,
-      categories: template.categories || [],
       description: template.description
     }));
 };
@@ -62,22 +63,27 @@ const TemplateSelector = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <Loader2 className="w-8 h-8 text-zinc-400 animate-spin" />
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <TemplatesSectionHero />
+        <div className="flex justify-center items-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 text-zinc-400 animate-spin" />
+        </div>
       </div>
+      
     );
   }
 
   if (error) {
     return (
-      <div className="text-center py-20">
-        <p className="text-red-500">{error.message}</p>
-        <button 
-          onClick={() => window.location.reload()} 
-          className="mt-4 text-amber-500"
-        >
-          Retry
-        </button>
+      <div>
+        <TemplatesSectionHero />
+        <div className="flex justify-center items-center py-5 min-h-[400px]">
+          <div className="flex flex-col items-center">
+            <BiErrorCircle className="w-10 h-10 text-red-400 mb-4" />
+            <p className="text-red-400 text-center">There was an error loading the templates, <br /> 
+            please try again later.</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -85,21 +91,7 @@ const TemplateSelector = () => {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      <div className="mb-16 mt-10 text-center">
-        <h1 className="text-5xl font-bold text-white mb-4 tracking-tight">
-          Resume templates
-        </h1>
-        <p className="text-lg text-zinc-300 max-w-3xl mx-auto">
-          All our templates are designed to pass{" "}
-          <span className="font-bold">
-            ATS scans
-          </span>
-          {" "}and maximize{" "}
-          <span className="font-bold">
-            your hiring potential.
-          </span>
-        </p>
-      </div>
+      <TemplatesSectionHero />
 
       <div className="mb-6 flex items-center gap-2 text-zinc-500 text-sm font-medium">
         <Sparkles className="w-4 h-4 text-amber-500" />

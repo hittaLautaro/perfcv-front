@@ -20,10 +20,6 @@ const TemplateCard = ({ template, onSelect, onPreview }) => {
             Use this template
           </button>
         </div>
-
-        <div className="absolute top-3 right-3 bg-zinc-900/90 backdrop-blur-md px-3 py-1 rounded-full text-sm font-bold text-zinc-100 shadow-sm border border-zinc-700">
-          {template.price === 0 ? "Free" : `$${template.price}`}
-        </div>
       </div>
 
       <div className="p-4">
