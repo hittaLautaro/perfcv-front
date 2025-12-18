@@ -72,9 +72,11 @@ const LoginPage = () => {
           <form onSubmit={handleSubmit}>
 
             {mutation.isError && (
-              <div className="flex flex-row items-center border gap-3 border-red-600 bg-red-800/30 text-red-400 p-2 text-sm rounded-md mb-4">
-                <BiErrorCircle className="w-8 h-8 text-red-400" />
-                <p className="text-red-400 text-sm">Error trying to login, please try again later.</p>
+              <div className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded relative mb-4" role="alert">
+                <div className="flex flex-row items-center gap-3">
+                  <BiErrorCircle className="w-8 h-8 text-red-400" />
+                  <p className="text-red-400 text-center">{mutation.error.message}</p>
+                </div>
               </div>
             )}
 
