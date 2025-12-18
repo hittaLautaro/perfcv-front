@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext.jsx";
 
 import logo from "../../assets/PERFCV_LOGO.svg";
 import { BiErrorCircle } from "react-icons/bi";
+import { Loader2 } from "lucide-react";
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -115,10 +116,10 @@ const LoginPage = () => {
 
             <button
               type="submit"
-              className="w-full bg-white text-black py-2 rounded-lg font-semibold hover:bg-amber-400 transition-all duration-300"
-              disabled={mutation.isLoading}
+              className="w-full flex items-center justify-center bg-white text-black py-2 rounded-lg font-semibold hover:bg-amber-400 transition-all duration-300"
+              disabled={mutation.isPending}
             >
-              {mutation.isLoading ? "Logging in..." : "Log in"}
+              {mutation.isPending ? <Loader2 className="w-6 h-6 animate-spin" /> : "Log in"}
             </button>
 
             <p className="text-sm text-center text-zinc-400 mt-4">
