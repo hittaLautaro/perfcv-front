@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { NavLink } from "react-router-dom";
 
+import { useMutation } from "@tanstack/react-query";
+
 import logo from "../../assets/PERFCV_LOGO.svg";
+import { Loader2 } from "lucide-react";
+import { BiErrorCircle } from "react-icons/bi";
 
 const SignupPage = () => {
   const { register } = useAuth();
@@ -12,7 +16,14 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
+  const mutation = useMutation({
+    mutationFn: ({ name, email, password }) => register({ name, email, password }),
+    onError: (error) => {
+      setError(error.message);
+    },
+  });
+
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
 
@@ -31,11 +42,7 @@ const SignupPage = () => {
       return;
     }
 
-    try {
-      await register({ name, email, password });
-    } catch (err) {
-      setError(err.message);
-    }
+    mutation.mutate({ name, email, password });
   };
 
   return (
@@ -90,7 +97,10 @@ const SignupPage = () => {
 
           {error && (
             <div className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded relative mb-4" role="alert">
-              <span className="block sm:inline">{error}</span>
+              <div className="flex flex-row items-center gap-3">
+                <BiErrorCircle className="w-8 h-8 text-red-400" />
+                <p className="text-red-400 text-center">{error}</p>
+              </div>
             </div>
           )}
 
@@ -170,9 +180,10 @@ const SignupPage = () => {
             <div className="mt-2 md:col-span-2">
               <button
                 type="submit"
-                className="w-full bg-white text-black py-2 rounded-lg font-semibold hover:bg-amber-400 transition-all duration-300"
+                className="w-full flex items-center justify-center bg-white text-black py-2 rounded-lg font-semibold hover:bg-amber-400 transition-all duration-300"
+                disabled={mutation.isPending}
               >
-                Create account
+                {mutation.isPending ? <Loader2 className="w-6 h-6 animate-spin" /> : "Create account"}
               </button>
             </div>
 
