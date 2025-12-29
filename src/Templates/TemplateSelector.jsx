@@ -6,7 +6,7 @@ import TemplateCard from "./TemplateCard";
 import TemplatesSectionHero from "./TemplatesSectionHero";
 import { BiErrorCircle } from "react-icons/bi";
 
-const fetchTemplates = async () => {
+const fetchTemplates = async ({ page = 1, limit = 6 }) => {
     const token = localStorage.getItem("accessToken");
     const headers = {
       "Content-Type": "application/json",
@@ -16,7 +16,7 @@ const fetchTemplates = async () => {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates`, {
+    const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates?page=${page}&limit=${limit}`, {
       headers,
       credentials: "include",
     });
@@ -31,22 +31,33 @@ const fetchTemplates = async () => {
 
     const data = await response.json();
     
-    return data.map(template => ({
-      id: template.id,
-      title: template.name,
-      image: template.previewUrl,
-      description: template.description
-    }));
+    return {
+      templates: data.templates.map(template => ({
+        id: template.id,
+        title: template.name,
+        image: template.previewUrl,
+        description: template.description
+      })),
+      totalPages: data.totalPages,
+      totalItems: data.totalItems,
+      page: data.page
+    };
 };
 
 const TemplateSelector = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const limit = 6;
 
-  const { data: templates = [], isLoading, error } = useQuery({
-    queryKey: ['templates'],
-    queryFn: fetchTemplates,
+  const { data, isLoading, error, isPlaceholderData } = useQuery({
+    queryKey: ['templates', page],
+    queryFn: () => fetchTemplates({ page, limit }),
+    placeholderData: (previousData) => previousData,
   });
+
+  const templates = data?.templates || [];
+  const totalPages = data?.totalPages || 0;
 
   const filteredTemplates = useMemo(() => {
     return templates.filter((template) => {
@@ -59,6 +70,14 @@ const TemplateSelector = () => {
 
   const handleTemplateSelect = (template) => {
       navigate(`/templates/${template.id}`, { state: { template } });
+  };
+
+  const handlePreviousPage = () => {
+    setPage((old) => Math.max(old - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old));
   };
 
   if (isLoading) {
@@ -95,10 +114,10 @@ const TemplateSelector = () => {
 
       <div className="mb-6 flex items-center gap-2 text-zinc-500 text-sm font-medium">
         <Sparkles className="w-4 h-4 text-amber-500" />
-        {filteredTemplates.length} templates found
+        {data?.totalItems || 0} templates found
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 pb-20">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 pb-10">
         {filteredTemplates.map((template) => (
           <TemplateCard
             key={template.id}
@@ -107,6 +126,28 @@ const TemplateSelector = () => {
           />
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-4 pb-20 mt-6">
+          <button
+            onClick={handlePreviousPage}
+            disabled={page === 1}
+            className="px-4 py-2 text-sm font-medium text-zinc-300 bg-zinc-900 rounded-md hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            Previous
+          </button>
+          <span className="text-zinc-400 text-sm">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={page === totalPages}
+            className="px-4 py-2 text-sm font-medium text-zinc-300 bg-zinc-900 rounded-md hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       {filteredTemplates.length === 0 && (
         <div className="text-center py-20">
