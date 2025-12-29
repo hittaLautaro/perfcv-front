@@ -130,23 +130,35 @@ const TemplateSelector = () => {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-4 pb-20 mt-6">
+        <div className="flex justify-center items-center gap-2 pb-20 mt-6">
           <button
             onClick={handlePreviousPage}
             disabled={page === 1}
-            className="px-2 py-2 text-sm font-medium text-zinc-300 bg-zinc-900 rounded-md hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="p-2 text-sm font-medium text-zinc-300 bg-zinc-900 rounded-md hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            <ChevronLeft className="w-4 h-4 text-zinc-500" />
+            <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-zinc-400 text-sm">
-            {page} / {totalPages}
-          </span>
+          
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+            <button
+              key={pageNum}
+              onClick={() => setPage(pageNum)}
+              className={`w-8 h-8 text-sm font-medium rounded-md transition-colors ${
+                page === pageNum
+                  ? "bg-zinc-100 text-zinc-900"
+                  : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
+              }`}
+            >
+              {pageNum}
+            </button>
+          ))}
+
           <button
             onClick={handleNextPage}
             disabled={page === totalPages}
-            className="px-2 py-2 text-sm font-medium text-zinc-300 bg-zinc-900 rounded-md hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="p-2 text-sm font-medium text-zinc-300 bg-zinc-900 rounded-md hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            <ChevronRight className="w-4 h-4 text-zinc-500" />
+            <ChevronRight className="w-4 h-4" />
           </button>
         </div>
       )}
