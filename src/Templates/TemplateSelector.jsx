@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Filter, Sparkles, Loader2, ArrowLeft, ArrowLeftIcon, StepBack, StepBackIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import TemplateCard from "./TemplateCard";
@@ -51,6 +51,10 @@ const TemplateSelector = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
   const limit = 6;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [page]);
 
   const { data, isLoading, error, isPlaceholderData } = useQuery({
     queryKey: ['templates', page],
