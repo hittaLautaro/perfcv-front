@@ -56,10 +56,9 @@ const TemplateSelector = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page]);
 
-  const { data, isLoading, error, isPlaceholderData } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['templates', page],
     queryFn: () => fetchTemplates({ page, limit }),
-    placeholderData: (previousData) => previousData,
   });
 
   const templates = data?.templates || [];
