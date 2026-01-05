@@ -32,7 +32,7 @@ const OAuthCallback = () => {
 
   return (
     <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center">
-      <Loader2 className="w-10 h-10 text-amber-500 animate-spin mb-4" />
+      <Loader2 className="w-10 h-10 text-zinc-500 animate-spin mb-4" />
     </div>
   );
 };
