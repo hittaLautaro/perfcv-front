@@ -89,11 +89,41 @@ const TemplateSelector = () => {
     return (
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <TemplatesSectionHero />
-        <div className="flex justify-center items-center min-h-[400px]">
+        <div className="flex justify-center items-center min-h-[500px]">
           <Loader2 className="w-8 h-8 text-zinc-400 animate-spin" />
         </div>
+        <div className="flex justify-center items-center gap-2 pb-20 mt-6">
+          <button
+            onClick={handlePreviousPage}
+            disabled={page === 1}
+            className="p-2 text-sm font-medium text-zinc-300 bg-zinc-900 rounded-md hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+            <button
+              key={pageNum}
+              onClick={() => setPage(pageNum)}
+              className={`w-8 h-8 text-sm font-medium rounded-md transition-colors ${
+                page === pageNum
+                  ? "bg-zinc-100 text-zinc-900"
+                  : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
+              }`}
+            >
+              {pageNum}
+            </button>
+          ))}
+
+          <button
+            onClick={handleNextPage}
+            disabled={page === totalPages}
+            className="p-2 text-sm font-medium text-zinc-300 bg-zinc-900 rounded-md hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
-      
     );
   }
 
