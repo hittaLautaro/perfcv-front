@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { authenticatedFetch } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
 const useAuth = () => {
@@ -33,13 +34,7 @@ const useAuth = () => {
       localStorage.setItem("accessToken", data.accessToken);
 
       try {
-        const userResponse = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${data.accessToken}`,
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const userResponse = await authenticatedFetch('/api/auth/me');
 
         if (userResponse.ok) {
           const userData = await userResponse.json();
@@ -81,13 +76,7 @@ const useAuth = () => {
       localStorage.setItem("accessToken", data.accessToken);
 
       try {
-        const userResponse = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${data.accessToken}`,
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const userResponse = await authenticatedFetch('/api/auth/me');
 
         if (userResponse.ok) {
           const userData = await userResponse.json();
@@ -126,13 +115,7 @@ const useAuth = () => {
 
     const fetchUser = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const res = await authenticatedFetch('/api/auth/me');
 
         if (res.ok) {
           const data = await res.json();

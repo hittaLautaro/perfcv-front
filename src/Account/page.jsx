@@ -1,23 +1,12 @@
 import React, { useState } from "react";
+import { authenticatedFetch } from "../utils/api";
 import { User, Mail, LogOut, Loader2} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import LogoutModal from "../global/components/LogoutModal";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchUser = async () => {
-    const token = localStorage.getItem("accessToken");
-    const headers = {
-      "Content-Type": "application/json",
-    };
-    
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
-    }
-
-    const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/users/`, {
-      headers,
-      credentials: "include",
-    });
+    const response = await authenticatedFetch('/api/users/');
 
     if (response.status === 403) {
       throw new Error("Access denied. Please log in to view your account details.");
