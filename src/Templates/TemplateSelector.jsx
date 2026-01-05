@@ -85,7 +85,7 @@ const TemplateSelector = () => {
     setPage((old) => (data?.totalPages && old < data.totalPages ? old + 1 : old));
   };
 
-  if (true) {
+  if (isLoading) {
     return (
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <TemplatesSectionHero />
