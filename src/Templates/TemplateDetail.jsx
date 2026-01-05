@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { authenticatedFetch } from "../utils/api";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Download } from "lucide-react";
 
@@ -14,11 +15,7 @@ const TemplateDetail = () => {
     if (!template) {
       const fetchTemplate = async () => {
         try {
-          const token = localStorage.getItem("accessToken");
-          const headers = { "Content-Type": "application/json" };
-          if (token) headers["Authorization"] = `Bearer ${token}`;
-
-          const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates/${id}`, { headers });
+          const response = await authenticatedFetch(`/api/templates/${id}`);
           if (!response.ok) throw new Error("Failed to load template");
           
           const found = await response.json();
@@ -43,19 +40,7 @@ const TemplateDetail = () => {
   const handleDownload = async (format) => {
     try {
       setDownloading(true);
-      const token = localStorage.getItem("accessToken");
-
-      if (!token) {
-        navigate("/auth/login");
-        return;
-      }
-
-      const headers = { "Content-Type": "application/json" };
-      headers["Authorization"] = `Bearer ${token}`;
-
-      const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates/${id}/download?format=${format}`, {
-        headers,
-      });
+      const response = await authenticatedFetch(`/api/templates/${id}/download?format=${format}`);
 
       if (!response.ok) throw new Error("Failed to get download URL");
 

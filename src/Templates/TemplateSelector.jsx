@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState, useMemo, useEffect } from "react";
+import { authenticatedFetch } from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import { Filter, Sparkles, Loader2, ArrowLeft, ArrowLeftIcon, StepBack, StepBackIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import TemplateCard from "./TemplateCard";
@@ -9,19 +10,7 @@ import { BsBack } from "react-icons/bs";
 import { IoArrowBackSharp } from "react-icons/io5";
 
 const fetchTemplates = async ({ page = 1, limit = 6 }) => {
-    const token = localStorage.getItem("accessToken");
-    const headers = {
-      "Content-Type": "application/json",
-    };
-    
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
-    }
-
-    const response = await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/templates?page=${page}&limit=${limit}`, {
-      headers,
-      credentials: "include",
-    });
+    const response = await authenticatedFetch(`/api/templates?page=${page}&limit=${limit}`);
 
     if (response.status === 403) {
       throw new Error("Access denied. Please log in to view templates.");
