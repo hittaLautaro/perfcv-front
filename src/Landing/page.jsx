@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 
 import Hero from "./components/Hero";
-import Footer from "../global/components/Footer";
 
 const LandingPage = () => {
   const [isVisible, setIsVisible] = useState(false);
+
+  console.log("API URL:", process.env.VITE_BACK_BASE_URL);
 
   useEffect(() => {
     setIsVisible(true);
