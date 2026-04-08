@@ -141,7 +141,7 @@ const TemplateSelector = () => {
         {data?.totalItems || 0} templates found
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 pb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-12 pb-10">
         {filteredTemplates.map((template) => (
           <TemplateCard
             key={template.id}
