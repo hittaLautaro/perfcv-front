@@ -55,6 +55,7 @@ const TemplateDetail = () => {
         document.body.removeChild(link);
       }
     } catch (error) {
+      navigate("/auth/login", { state: { from: location } });
     } finally {
       setDownloading(false);
     }
