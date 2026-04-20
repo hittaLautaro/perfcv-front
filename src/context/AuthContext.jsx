@@ -1,11 +1,13 @@
 import { createContext, useContext, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import useAuthHook from "../Auth/hooks/useAuth.js";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [authKey, setAuthKey] = useState(0);
-  const auth = useAuthHook();
+  const queryClient = useQueryClient();
+  const auth = useAuthHook(queryClient);
 
   const forceUpdate = () => {
     setAuthKey((prev) => prev + 1);

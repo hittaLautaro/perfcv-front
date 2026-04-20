@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { authenticatedFetch } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
-const useAuth = () => {
+const useAuth = (queryClient) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -92,19 +92,27 @@ const useAuth = () => {
   );
 
   const logout = useCallback(async () => {
+    // Clear local data first to prevent any race conditions
+    localStorage.removeItem("accessToken");
+    setUser(null);
+
+    // Clear React Query cache to remove previous user's data
+    if (queryClient) {
+      queryClient.clear();
+    }
+
+    // Call backend to invalidate refresh token
     try {
       await fetch(`${import.meta.env.VITE_BACK_BASE_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
-        redirect: "manual",
       });
     } catch (error) {
+      console.error("Logout request failed:", error);
     }
 
-    localStorage.removeItem("accessToken");
-    setUser(null);
     navigate("/");
-  }, [navigate]);
+  }, [navigate, queryClient]);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");

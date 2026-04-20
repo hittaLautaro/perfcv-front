@@ -23,6 +23,14 @@ export const authenticatedFetch = async (endpoint, options = {}) => {
   let response = await fetch(url, config);
 
   if (response.status === 401) {
+    // Only attempt refresh if we had a token to begin with
+    // If no token exists, user has logged out and we shouldn't auto-refresh
+    const currentToken = localStorage.getItem("accessToken");
+
+    if (!currentToken) {
+      return response;
+    }
+
     try {
       const refreshResponse = await fetch(`${BASE_URL}/api/auth/refresh`, {
         method: "POST",
@@ -35,7 +43,7 @@ export const authenticatedFetch = async (endpoint, options = {}) => {
       if (refreshResponse.ok) {
         const data = await refreshResponse.json();
         const newAccessToken = data.accessToken;
-        
+
         localStorage.setItem("accessToken", newAccessToken);
 
         const newConfig = {
@@ -47,16 +55,16 @@ export const authenticatedFetch = async (endpoint, options = {}) => {
           },
           credentials: "include",
         };
-        
+
         return fetch(url, newConfig);
       } else {
         localStorage.removeItem("accessToken");
-        return response; 
+        return response;
       }
     } catch (refreshError) {
       console.error("Token refresh failed:", refreshError);
       localStorage.removeItem("accessToken");
-      return response; 
+      return response;
     }
   }
 
